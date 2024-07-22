@@ -64,3 +64,12 @@ To run the hyperparameter optimization using TPE search:
 python search_TPE.py [start:end:increment]
 python search_TPE.py [dataset_index]
 python search_TPE.py [dataset_name]
+
+### Evaluating the Best Hyperparameters
+To evaluate the best hyperparameters found using TPE search:
+
+```sh
+
+python get_results_TPE.py [start:end:increment]
+python get_results_TPE.py [dataset_index]
+python get_results_TPE.py [dataset_name]

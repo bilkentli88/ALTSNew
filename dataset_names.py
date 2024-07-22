@@ -21,7 +21,7 @@ def get_database_list_from_arguments(sys_argv):
 
         if ":" in arg:
             arg_arr = arg.split(":")
-            if len(arg_arr == 3):
+            if len(arg_arr) == 3:
                 increment = int(arg_arr[2])
             else:
                 increment = 1

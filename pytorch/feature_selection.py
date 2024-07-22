@@ -1,9 +1,3 @@
-"""
-feature_selection.py
-
-This module contains functions for evaluating model performance and performing recursive feature elimination (RFE).
-"""
-
 import numpy as np
 import torch
 from sklearn.metrics import accuracy_score
@@ -13,7 +7,7 @@ from shapelet_generation import ShapeletGeneration as ShapeletNN
 
 def evaluate_model_performance(dataset_name, bag_size, n_prototypes, max_epoch, features_to_use_str, lambda_fused_lasso):
     """
-    Evaluates the model performance on the test set.
+    Evaluates the model performance on a validation set.
 
     Parameters:
     - dataset_name (str): The name of the dataset.
@@ -24,7 +18,7 @@ def evaluate_model_performance(dataset_name, bag_size, n_prototypes, max_epoch, 
     - lambda_fused_lasso (float): The regularization parameter for fused lasso.
 
     Returns:
-    - float: The accuracy score on the test set.
+    - float: The accuracy score on the validation set.
     """
     train, y_train, test, y_test = load_dataset(dataset_name)
     y_train = torch.from_numpy(y_train).float()
@@ -43,7 +37,7 @@ def evaluate_model_performance(dataset_name, bag_size, n_prototypes, max_epoch, 
     net = ShapeletRegularizedNet(
         module=nn_shapelet_generator,
         max_epochs=max_epoch,
-        lr=0.0001,  # Decreased learning rate
+        lr=0.0001,
         criterion=torch.nn.CrossEntropyLoss,
         optimizer=torch.optim.Adam,
         iterator_train__shuffle=True,
@@ -75,6 +69,7 @@ def rfe_feature_selection(dataset_name, initial_features, bag_size, n_prototypes
     features = initial_features.split(',')
     best_features = features[:]
     best_accuracy = 0
+    feature_importance = []
 
     for feature in features:
         features_to_use = ','.join([f for f in best_features if f != feature])
@@ -86,8 +81,15 @@ def rfe_feature_selection(dataset_name, initial_features, bag_size, n_prototypes
             features_to_use_str=features_to_use,
             lambda_fused_lasso=lambda_fused_lasso
         )
+        feature_importance.append((feature, val_accuracy))
         if val_accuracy > best_accuracy:
             best_accuracy = val_accuracy
             best_features = [f for f in best_features if f != feature]
 
-    return best_features, best_accuracy
+    # Sort features by importance (higher accuracy means less important when removed)
+    feature_importance.sort(key=lambda x: x[1], reverse=True)
+
+    # Re-order best_features based on importance
+    ordered_best_features = [f[0] for f in feature_importance if f[0] in best_features]
+
+    return ordered_best_features, best_accuracy

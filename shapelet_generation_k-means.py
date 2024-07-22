@@ -18,6 +18,7 @@ class ShapeletGeneration3LN(nn.Module):
                  n_classes,
                  stride_ratio,
                  features_to_use_str,
+                 lambda_prototypes=None
                  lambda_linear_params=None,
                  lambda_fused_lasso=None,
                  dropout_rate=0.50,
@@ -29,6 +30,7 @@ class ShapeletGeneration3LN(nn.Module):
         self.n_classes = n_classes
         self.stride_ratio = stride_ratio
         self.features_to_use = features_to_use_str.split(",")
+        self.lambda_prototypes = lambda_prototypes
         self.lambda_fused_lasso = lambda_fused_lasso
         self.lambda_linear_params = lambda_linear_params
         self.dropout_rate = dropout_rate

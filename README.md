@@ -65,6 +65,7 @@ python search_TPE.py [start:end:increment]
 python search_TPE.py [dataset_index]
 python search_TPE.py [dataset_name]
 
+### Evaluatioon ot th ejrlejerlj
 ### Evaluating the Best Hyperparameters
 To evaluate the best hyperparameters found using TPE search:
 

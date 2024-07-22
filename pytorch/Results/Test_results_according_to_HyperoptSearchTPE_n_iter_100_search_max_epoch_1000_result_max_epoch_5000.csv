@@ -1,0 +1,2 @@
+dataset_name,bag_size,n_prototypes,stride_ratio,max_epoch,features_to_use_str,test_accuracy
+ECG200,47,83,0.1,5000,"min,max,mean",0.91

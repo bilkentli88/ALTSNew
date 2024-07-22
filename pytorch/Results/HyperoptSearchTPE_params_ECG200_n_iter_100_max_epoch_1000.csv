@@ -1,0 +1,2 @@
+dataset_name,search_type,features_to_use,bag_size,n_classes,n_prototypes,stride_ratio,n_iter,cv_count,train_accuracy
+ECG200,HyperoptSearchTPE,"min,max,mean",47,2,83,0.1,100,3,0.9604872251931075
